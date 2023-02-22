@@ -1,3 +1,5 @@
 rootProject.name ="springboot101"
 include "springboot-kafka"
 include "springboot-redis"
+include 'springboot-nacos'
+

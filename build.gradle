@@ -15,6 +15,10 @@ subprojects {
             extendsFrom annotationProcessor
         }
     }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+    }
 }
 repositories {
     mavenCentral()
