@@ -8,22 +8,14 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import static io.lettuce.core.ReadFrom.REPLICA_PREFERRED;
 
 @Configuration
 public class RedisConfig {
-
-//    @Bean
-//    public LettuceConnectionFactory redisFactory() {
-//        return new LettuceConnectionFactory(new RedisStandaloneConfiguration());
-//    }
-
-//    @Bean
-//    public JedisConnectionFactory redisConnectionFactory() {
-//        return new JedisConnectionFactory();
-//    }
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
@@ -39,10 +31,17 @@ public class RedisConfig {
         return factory.getConnection();
     }
 
-//    @Bean
-//    StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-//        StringRedisTemplate template = new StringRedisTemplate();
-//        template.setConnectionFactory(redisConnectionFactory);
-//        return template;
-//    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(factory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Object.class));
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        redisTemplate.setDefaultSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        redisTemplate.setEnableDefaultSerializer(true);
+        return redisTemplate;
+    }
 }

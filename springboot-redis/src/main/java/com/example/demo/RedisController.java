@@ -2,13 +2,10 @@ package com.example.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
 
 @RestController
 @Slf4j
@@ -20,9 +17,12 @@ public class RedisController {
     final
     RedisConnection redisConnection;
 
-    public RedisController(StringRedisTemplate template, RedisConnection redisConnection) {
+    final RedisDataService redisHash;
+
+    public RedisController(StringRedisTemplate template, RedisConnection redisConnection, RedisDataService redisHash) {
         this.template = template;
         this.redisConnection = redisConnection;
+        this.redisHash = redisHash;
     }
 
     @GetMapping("/save/{what}")
@@ -39,4 +39,14 @@ public class RedisController {
     }
 
 
+    @GetMapping("/user/{uid}")
+    public User findUser(@PathVariable String uid) {
+        log.info("save user {}", uid);
+        User user = new User();
+        user.setUid(uid);
+        user.setName(uid + "111");
+        user.setToken("xxxxxxx");
+        redisHash.saveUser(user);
+        return redisHash.getUser(user.getUid());
+    }
 }
