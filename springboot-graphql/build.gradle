@@ -1,0 +1,10 @@
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation("com.google.guava:guava:31.1-jre")
+    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:14.0.0'
+    // testing facilities
+    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:14.0.0'
+    testImplementation 'org.springframework:spring-webflux'
+    testImplementation 'org.springframework.graphql:spring-graphql-test'
+}

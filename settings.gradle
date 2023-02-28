@@ -4,4 +4,5 @@ include "springboot-redis"
 include 'springboot-nacos'
 include 'springboot-mysql-jpa'
 include 'springboot-elasticsearch'
+include 'springboot-graphql'
 
